@@ -35,34 +35,5 @@ class CellSearch:
         transition_probabilities = self.transition_probabilities[state]
         for next_state, transition_probability in transition_probabilities.iteritems():
             results.append((next_state, next_state, 1/(transition_probability)))
-
-
-
-
-
-        # for next_state, transition_probability in transition_probabilities.iteritems():
-        #     results.append((next_state, next_state, 1/transition_probability))
-        # next_states_set.add(state) # add back in
-
-        # if cell_type == 'PS':
-        #     next_states_set = self.data['NP']
-        #     transition_probabilities = self.transition_probabilities[state]
-        #     for next_state, transition_probability in transition_probabilities.iteritems():
-        #         results.append((next_state, next_state, 1/transition_probability))
-        # if cell_type == 'NP':
-        #     next_states_set = self.data['HF']
-        #     transition_probabilities = self.transition_probabilities(state, next_states_set)
-        #     for next_state, transition_probability in transition_probabilities.iteritems():
-        #         results.append((next_state, next_state, 1/transition_probability))
-        # if cell_type == 'HF':
-        #     next_states_set = self.data['4G']
-        #     transition_probabilities = self.transition_probabilities(state, next_states_set)
-        #     for next_state, transition_probability in transition_probabilities.iteritems():
-        #         results.append((next_state, next_state, 1/transition_probability))
-
-        #     next_states_set = self.data['4GF']
-        #     transition_probabilities = self.transition_probabilities(state, next_states_set)
-        #     for next_state, transition_probability in transition_probabilities.iteritems():
-        #         results.append((next_state, next_state, 1/transition_probability))
         
         return results
