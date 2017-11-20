@@ -3,81 +3,85 @@ import csv
 import numpy
 import math
 
+
 def ingest_search(cells_filename, types_filename, genes_filename):
-	data_table = get_states(cells_filename)
-	types_list = get_vec(types_filename)
-	genes_list = get_vec(genes_filename)
+    data_table = get_states(cells_filename)
+    types_list = get_vec(types_filename)
+    genes_list = get_vec(genes_filename)
 
-	data_dict = collections.defaultdict(set)
-	gene_expression_dict = collections.defaultdict(list)
+    data_dict = collections.defaultdict(set)
+    gene_expression_dict = collections.defaultdict(list)
 
-	for i in range(0, len(data_table)):
-		cell_type = types_list[i]
-		cell_gene_profile = data_table[i]
-		cell_gene_state = []
-		for gene in genes_list:
-			cell_gene_state.append(float(cell_gene_profile[gene]))
-			gene_expression_dict[gene].append(float(cell_gene_profile[gene]))
-		data_dict[cell_type].add((tuple(cell_gene_state), cell_type))
+    for i in range(0, len(data_table)):
+        cell_type = types_list[i]
+        cell_gene_profile = data_table[i]
+        cell_gene_state = []
+        for gene in genes_list:
+            cell_gene_state.append(float(cell_gene_profile[gene]))
+            gene_expression_dict[gene].append(float(cell_gene_profile[gene]))
+        data_dict[cell_type].add((tuple(cell_gene_state), cell_type))
 
-	spread_weights = compute_spread_weights(gene_expression_dict, genes_list)
-	transition_probabilities_dict = collections.defaultdict(dict)
+    spread_weights = compute_spread_weights(gene_expression_dict, genes_list)
+    transition_probabilities_dict = collections.defaultdict(dict)
 
-	for cell_type, current_set in data_dict.iteritems():
-		if cell_type == 'PS':
-			next_set = data_dict['NP'].union(current_set)
-		if cell_type == 'NP':
-			next_set = data_dict['HF'].union(current_set)
-		if cell_type == 'HF':
-			next_set = data_dict['4G'].union(current_set)
-			next_set = next_set.union(data_dict['4GF'])
-		for cell_state in current_set:
-			if cell_type == '4G' or cell_type == '4GF':
-				next_set = {(cell_state[0], 'FATE')}
-			else: 
-				next_set.remove(cell_state)
-			transitions = transition_probabilities(cell_state, next_set, spread_weights, genes_list)
-			transition_probabilities_dict[cell_state] = transitions
-			if cell_type != '4G' and cell_type != '4GF': next_set.add(cell_state)
+    for cell_type, current_set in data_dict.iteritems():
+        if cell_type == 'PS':
+            next_set = data_dict['NP'].union(current_set)
+        if cell_type == 'NP':
+            next_set = data_dict['HF'].union(current_set)
+        if cell_type == 'HF':
+            next_set = data_dict['4G'].union(current_set)
+            next_set = next_set.union(data_dict['4GF'])
+        for cell_state in current_set:
+            if cell_type == '4G' or cell_type == '4GF':
+                next_set = {(cell_state[0], 'FATE')}
+            else: 
+                next_set.remove(cell_state)
+            transitions = transition_probabilities(
+                cell_state, next_set, spread_weights, genes_list)
+            transition_probabilities_dict[cell_state] = transitions
+            if cell_type != '4G' and cell_type != '4GF': 
+                next_set.add(cell_state)
 
-	return (data_dict, genes_list, transition_probabilities_dict)
+    return (data_dict, genes_list, transition_probabilities_dict)
+
 
 def get_states(cells_filename):
-	data_table = []
-	with open(cells_filename, 'rU') as csvfile:
-		reader = csv.DictReader(csvfile)
-		for row in reader:
-			row.pop('Cell') # remove cell name
-			data_table.append(row)
-	return data_table
+    data_table = []
+    with open(cells_filename, 'rU') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            row.pop('Cell') # remove cell name
+            data_table.append(row)
+    return data_table
 
 def get_vec(vec_filename):
-	info = []
-	with open(vec_filename, 'r') as csvfile:
-		reader = csv.reader(csvfile)
-		for row in reader:
-			info.append(row[0])
-	return info
+    info = []
+    with open(vec_filename, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            info.append(row[0])
+    return info
 
 def compute_spread_weights(gene_expression_dict, genes_list):
-	spread_dict = {}
-	spread_weight = []
+    spread_dict = {}
+    spread_weight = []
 
-	# This takes every gene's expression value list and computes the standard deviation.
-	for gene in genes_list:
-		spread_weight.append(numpy.std(gene_expression_dict[gene]))
+    # This takes every gene's expression value list and computes the standard deviation.
+    for gene in genes_list:
+        spread_weight.append(numpy.std(gene_expression_dict[gene]))
 
-	# Normalize
-	spread_weight = spread_weight/sum(spread_weight)
+    # Normalize
+    spread_weight = spread_weight/sum(spread_weight)
 
-	# Convert into a dictionary for easy access
-	for i in range(0, len(genes_list)):
-		gene = genes_list[i]
-		spread_dict[gene] = spread_weight[i]
+    # Convert into a dictionary for easy access
+    for i in range(0, len(genes_list)):
+        gene = genes_list[i]
+        spread_dict[gene] = spread_weight[i]
 
-	print(spread_dict)
+    print(spread_dict)
 
-	return spread_dict
+    return spread_dict
 
 # This function takes in the names of our two cells of interest and then computes a weighted euclidean distance. 
 def inverse_distance(cell1, cell2, spread_weights, genes_list):
