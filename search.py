@@ -25,9 +25,6 @@ for cell_type in data:
             total_cost[starting_state] = ucs.totalCost
             actions[starting_state] = ucs.actions
 
-# json.dump(num_states_explored, open('num_states_explored.json', 'w'))
-# json.dump(total_cost, open('total_cost.json', 'w'))
-# json.dump(actions, open('actions.json', 'w'))
 
 with open('num_states_explored_norm.csv', 'w') as f:
     writer = csv.writer(f)    
