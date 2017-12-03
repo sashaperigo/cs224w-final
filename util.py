@@ -64,6 +64,3 @@ def build_graph(dataframe, types_of_indices, sampler_fn):
                     # Conditional depending on what type of graph we're doing
                     edges[src].add(dst)
 
-
-data = get_normalized_data("norm.csv", "celltypes.txt")
-types_to_indices = get_cell_types_to_indices(data)
