@@ -34,11 +34,12 @@ def get_spread_weight_series(dataframe):
     return np.std(dataframe) / np.sum(np.std(dataframe))
 
 
-def cell_types_to_indices(dataframe):
+def get_cell_types_to_indices(dataframe):
     types_to_indices = {}
     for cell_type in CELL_TYPES:
         types_to_indices[cell_type] = set(
-            dataframe.loc[dataframe['Type'] == cell_type].index.tolist())
+            dataframe.loc[dataframe['Type'] == cell_type].index.tolist()
+        )
     return types_to_indices
 
 
@@ -71,4 +72,4 @@ def build_graph(dataframe, types_of_indices, sampler_fn):
 
 
 data = get_normalized_data("norm.csv", "celltypes.txt")
-types_to_indices = cell_types_to_indices(data)
+types_to_indices = get_cell_types_to_indices(data)
