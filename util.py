@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-from collections import defaultdict
-import random
 from defs import CELL_TYPES, PRIMITIVE_TYPES, EVOLUTIONARY_CHAIN
 
 
