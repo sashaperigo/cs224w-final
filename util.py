@@ -4,6 +4,7 @@ from collections import defaultdict
 import random
 from defs import CELL_TYPES, PRIMITIVE_TYPES, EVOLUTIONARY_CHAIN
 
+
 # ----DATA UTIL----
 
 def get_normalized_data(measurements_path, types_path):
@@ -42,4 +43,3 @@ def get_spread_weight_series(dataframe):
 
 def evolve_type(cell_type):
     return EVOLUTIONARY_CHAIN[cell_type]
-
