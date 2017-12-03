@@ -4,6 +4,7 @@ from collections import defaultdict
 import random
 from defs import CELL_TYPES, PRIMITIVE_TYPES, EVOLUTIONARY_CHAIN
 
+# ----DATA UTIL----
 
 def get_normalized_data(measurements_path, types_path):
     measurements = get_data(measurements_path)
@@ -14,6 +15,17 @@ def get_normalized_data(measurements_path, types_path):
 def get_data(path):
     return pd.read_csv(path)
 
+
+def get_cell_types_to_indices(dataframe):
+    types_to_indices = {}
+    for cell_type in CELL_TYPES:
+        types_to_indices[cell_type] = set(
+            dataframe.loc[dataframe['Type'] == cell_type].index.tolist()
+        )
+    return types_to_indices
+
+
+# ----GENE UTIL----
 
 def get_weighted_euclidean_distance(dataframe, index1, index2, spread_weights):
     return np.sqrt(
@@ -26,15 +38,6 @@ def get_weighted_euclidean_distance(dataframe, index1, index2, spread_weights):
 
 def get_spread_weight_series(dataframe):
     return np.std(dataframe) / np.sum(np.std(dataframe))
-
-
-def get_cell_types_to_indices(dataframe):
-    types_to_indices = {}
-    for cell_type in CELL_TYPES:
-        types_to_indices[cell_type] = set(
-            dataframe.loc[dataframe['Type'] == cell_type].index.tolist()
-        )
-    return types_to_indices
 
 
 # def watts_strogatz(dataframe, types_to_indices):
