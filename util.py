@@ -6,11 +6,19 @@ import random
 EVOLUTIONARY_CHAIN = {
     'PS': ['PS', 'NP'],
     'NP': ['NP', 'HF'],
-    'HF': ['4G', '4GF']
+    'HF': ['4G', '4GF'],
 }
 
+CELL_TYPES = [
+    'PS', 'NP', 'HF', '4G', '4GF',
+]
+
 PRIMITIVE_TYPES = [
-    'PS', 'NP', 'HF'
+    'PS', 'NP', 'HF',
+]
+
+TERMINAL_TYPES = [
+    '4G', '4GF',
 ]
 
 
@@ -44,9 +52,8 @@ def get_spread_weight_series(dataframe):
 
 
 def cell_types_to_indices(dataframe):
-    types = ["HF", "PS", "NP", "4G", "4GF"]
     types_to_indices = {}
-    for cell_type in types:
+    for cell_type in CELL_TYPES:
         types_to_indices[cell_type] = set(
             dataframe.loc[dataframe['Type'] == cell_type].index.tolist())
     return types_to_indices
