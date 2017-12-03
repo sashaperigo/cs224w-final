@@ -16,11 +16,17 @@ def watts_strogatz_sampler(dataframe, source_index, sink_indices_list, spread_we
     assert len(sampled) > 1
     return sampled
 
+
 def erdos_renyi_sampler(dataframe, source_index, sink_indices_list, percent=0.2):
     assert (percent <= 1) and (percent >= 0)
     sampled = set(np.random.choice(sink_indices_list, int(percent * len(sink_indices_list))))
     assert len(sampled) > 1
     return sampled
+
+
+def complete_sampler(dataframe, source_index, sink_indices_list):
+    return set(sink_indices_list)
+
 
 # primitive cannot stay, must evolve; easier computation in that we don't have to do unions, don't have to worry about self-loops
 def build_graph(dataframe, types_to_indices, sampler_fn, sampler_fn_kwargs):
