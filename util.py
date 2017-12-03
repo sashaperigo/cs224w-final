@@ -21,7 +21,7 @@ def get_data(path):
 #   # Evaluate model
 
 
-def get_weighted_euclidean(dataframe, index1, index2, spread_weights):
+def get_weighted_euclidean_distance(dataframe, index1, index2, spread_weights):
     return np.sqrt(
         np.sum(
             ((dataframe.iloc[index2] - dataframe.iloc[index1]) ** 2) *
