@@ -14,12 +14,6 @@ def get_normalized_data(measurements_path, types_path):
 def get_data(path):
     return pd.read_csv(path)
 
-# def evaluate_network_model():
-#   # Create network model
-#   # Run search problem for all 3000+ cells to find terminal states
-#   # Compare terminal states to "gold list" from paper
-#   # Evaluate model
-
 
 def get_weighted_euclidean_distance(dataframe, index1, index2, spread_weights):
     return np.sqrt(
