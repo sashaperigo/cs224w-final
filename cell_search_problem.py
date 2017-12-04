@@ -1,10 +1,3 @@
-import heapq, collections, re, sys, time, os, random
-
-import csv
-import math
-import ingest_data
-import random
-
 from defs import TERMINAL_MARKER
 
 ############################################################
