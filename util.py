@@ -15,6 +15,7 @@ def get_data(path):
     return pd.read_csv(path)
 
 
+# Returns a dictionary of cell types to sets of indices into the dataframe.
 def get_cell_types_to_indices(dataframe):
     types_to_indices = {}
     for cell_type in CELL_TYPES:
@@ -26,6 +27,8 @@ def get_cell_types_to_indices(dataframe):
 
 # ----GENE UTIL----
 
+# Given the dataframe, two indices and spreadweights, returns a number
+# measuring the distance between two cells.
 def get_weighted_euclidean_distance(dataframe, index1, index2, spread_weights):
     return np.sqrt(
         np.sum(
@@ -35,9 +38,12 @@ def get_weighted_euclidean_distance(dataframe, index1, index2, spread_weights):
     )
 
 
+# Returns a Pandas series of the spread weights.
 def get_spread_weight_series(dataframe):
     return np.std(dataframe) / np.sum(np.std(dataframe))
 
 
+# Given a cell type, returns the next evolutionary stage.
 def evolve_type(cell_type):
+    assert cell_type in ['PS', 'NP', 'HF']
     return EVOLUTIONARY_CHAIN[cell_type]
