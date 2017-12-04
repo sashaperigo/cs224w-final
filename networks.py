@@ -1,3 +1,4 @@
+from defs import PRIMITIVE_TYPES, TERMINAL_TYPES, TERMINAL_MARKER
 from util import evolve_type, get_weighted_euclidean_distance, get_spread_weight_series
 import numpy as np
 
@@ -40,5 +41,9 @@ def build_graph(dataframe, types_to_indices, sampler_fn, sampler_fn_kwargs):
         for primitive_source in primitive_indices:
             successor_sinks = sampler_fn(dataframe, primitive_source, successor_indices_list, **sampler_fn_kwargs)
             edges[primitive_source] = successor_sinks
+
+    for terminal_type in TERMINAL_TYPES:
+        for terminal_source in types_to_indices[terminal_type]:
+            edges[terminal_source] = TERMINAL_MARKER
 
     return edges
