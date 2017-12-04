@@ -24,19 +24,3 @@ for cell_type in data:
             num_states_explored[starting_state] = ucs.numStatesExplored
             total_cost[starting_state] = ucs.totalCost
             actions[starting_state] = ucs.actions
-
-
-with open('num_states_explored_norm.csv', 'w') as f:
-    writer = csv.writer(f)    
-    for k,v in num_states_explored.iteritems():
-        writer.writerow([k] + [v])
-
-with open('total_cost_norm.csv', 'w') as f:
-    writer = csv.writer(f)    
-    for k,v in total_cost.iteritems():
-        writer.writerow([k] + [v])
-
-with open('actions_norm.csv', 'w') as f:
-    writer = csv.writer(f)    
-    for k,v in actions.iteritems():
-        writer.writerow([k] + v)
