@@ -1,6 +1,6 @@
 EVOLUTIONARY_CHAIN = {
-    'PS': ['PS', 'NP'],
-    'NP': ['NP', 'HF'],
+    'PS': 'NP',
+    'NP': 'HF',
     'HF': ['4G', '4GF'],
 }
 
