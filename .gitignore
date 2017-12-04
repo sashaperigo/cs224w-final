@@ -99,3 +99,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Exclude large dsitances file
+input_data/euclidean_distances.csv
