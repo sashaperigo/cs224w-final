@@ -26,7 +26,7 @@ class CellSearchProblem:
         results = []
 
         for successor_state in self.edges_dict[state]:
-            cost = self.cost_fn(sorted(state, successor_state))
+            cost = self.cost_fn(state, successor_state)
             results.append((successor_state, successor_state, cost))
         
         return results
