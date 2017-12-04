@@ -5,7 +5,7 @@ import numpy as np
 
 def watts_strogatz_sampler(dataframe, source_index, sink_indices_list, spread_weights, alpha=2, percent=0.2):
     proportions = np.array([
-        1/np.power(get_weighted_euclidean_distance(dataframe, source_index, sink_index, spread_weights), alpha) \
+        1 / np.power(get_weighted_euclidean_distance(dataframe, source_index, sink_index, spread_weights), alpha) \
             for sink_index in sink_indices
     ])
     sampled = set(np.random.choice(
@@ -28,7 +28,9 @@ def complete_sampler(dataframe, source_index, sink_indices_list):
     return set(sink_indices_list)
 
 
-# primitive cannot stay, must evolve; easier computation in that we don't have to do unions, don't have to worry about self-loops
+# Note: we're making the assumption here that primitive types cannot stay
+# primitive, they must evolve. This makes for an easier computation as we
+# don't have to worry about self loops.
 def build_graph(dataframe, types_to_indices, sampler_fn, sampler_fn_kwargs):
     edges = defaultdict(set)
     for primitive_type in PRIMITIVE_TYPES:
