@@ -1,6 +1,6 @@
 EVOLUTIONARY_CHAIN = {
-    'PS': 'NP',
-    'NP': 'HF',
+    'PS': ['NP'],
+    'NP': ['HF'],
     'HF': ['4G', '4GF'],
 }
 
@@ -21,3 +21,7 @@ TERMINAL_MARKER = 'TERMINAL_MARKER'
 DISTANCES_FILE = 'euclidean_distances.csv'
 
 DISTANCES_COLNAME = 'distance'
+
+MEASUREMENTS_PATH = 'input_data/norm.csv'
+
+TYPES_PATH = 'input_data/celltypes.txt'

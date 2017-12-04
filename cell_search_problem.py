@@ -24,7 +24,6 @@ class CellSearchProblem:
     # Cost is the weighted Euclidean distance between the current cell and the successor. 
     def succAndCost(self, state):
         results = []
-
         for successor_state in self.edges_dict[state]:
             cost = self.cost_fn(state, successor_state)
             results.append((successor_state, successor_state, cost))
