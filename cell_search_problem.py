@@ -11,7 +11,7 @@ from defs import TERMINAL_MARKER
 # Abstract interfaces for search problems and search algorithms.
 
 # State-based Models for Cellular Differentiation
-class CellSearch:
+class CellSearchProblem:
     def __init__(self, start_index, edges_dict, cost_fn):
         self.start_index = start_index
         self.edges_dict = edges_dict
