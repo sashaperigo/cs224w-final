@@ -25,3 +25,11 @@ DISTANCES_COLNAME = 'distance'
 MEASUREMENTS_PATH = 'input_data/norm.csv'
 
 TYPES_PATH = 'input_data/celltypes.txt'
+
+ENDOTHELIAL_GENES = [
+    'Cdh5', 'Erg', 'HoxB4', 'Sox7', 'Sox17',
+]
+
+ERYTHROID_GENES = [
+    'Gata1', 'Gfi1b', 'Hbbbh1', 'Ikaros', 'Myb', 'Nfe2',
+]
