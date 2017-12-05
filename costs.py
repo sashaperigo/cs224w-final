@@ -5,7 +5,7 @@ from defs import DISTANCES_FILE, DISTANCES_COLNAME, TERMINAL_MARKER
 
 def euclidean_cost(index1, index2):
     if (index1 == TERMINAL_MARKER) or (index2 == TERMINAL_MARKER):
-		return 0
+        return 0
     index1, index2 = sorted((index1, index2))
     return distances.ix[index1, index2][DISTANCES_COLNAME]
 

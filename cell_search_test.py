@@ -1,4 +1,4 @@
-from cell_search_util import find_shortest_path_from
+from cell_search import find_shortest_path_from
 from defs import TERMINAL_MARKER
 
 
@@ -19,7 +19,7 @@ class NumberLineSearchProblem:
             10: set([9, TERMINAL_MARKER])
         }
         self.start_index = 0
-        self.expected = [(1, 2), (2, 2), (3, 2), (4, 2), (5, 2), (6, 2), (7, 2), (8, 2), (9, 2)]
+        self.expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     def cost_fn(self, index1, index2):
         if index2 < index1:

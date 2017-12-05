@@ -18,27 +18,26 @@ class UniformCostSearch:
     # until that point.
     def solve(self):
         visited = set()
-        self.actions.append((self.start_index, 0))
+        self.actions.append(self.start_index)
         queue = PriorityQueue()
         queue.put((0, self.start_index))
 
         while queue:
-            total_cost, curr_index = queue.get()
+            cost, curr_index = queue.get()
 
             if curr_index not in visited:
                 visited.add(curr_index)
                 if self.is_end(curr_index):
                     # Exclude the first action, as it is the starting state.
-                    self.actions = self.actions[1:-1]
+                    self.actions = self.actions[1:]
                     return self.actions
 
                 if curr_index != self.start_index:
-                    prev_index = self.actions[-1][0]
-                    self.actions.append((curr_index, self.cost_fn(prev_index, curr_index)))
+                    self.actions.append(curr_index)
 
                 for neighbor in self.edges_dict[curr_index]:
                     if neighbor not in visited:
-                        total_cost = total_cost + self.cost_fn(curr_index, neighbor)
+                        total_cost = cost + self.cost_fn(curr_index, neighbor)
                         queue.put((total_cost, neighbor))
 
 
