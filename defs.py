@@ -33,3 +33,7 @@ ENDOTHELIAL_GENES = [
 ERYTHROID_GENES = [
     'Gata1', 'Gfi1b', 'Hbbbh1', 'Ikaros', 'Myb', 'Nfe2',
 ]
+
+ENDOTHELIAL = '4G'
+
+ERYTHROID = '4GF'
