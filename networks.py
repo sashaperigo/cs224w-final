@@ -1,16 +1,16 @@
 from costs import euclidean_cost
 from defs import PRIMITIVE_TYPES, TERMINAL_TYPES, TERMINAL_MARKER
-from util import evolve_type, get_weighted_euclidean_distance, get_spread_weight_series
+from util import evolve_type
 
 from collections import defaultdict
 import numpy as np
 
 # do caching where necessary
 
-def watts_strogatz_sampler(source_index, sink_indices_list, spread_weights, alpha=2, percent=0.2):
+def watts_strogatz_sampler(source_index, sink_indices_list, alpha=1, percent=0.1):
     proportions = np.array([
         1 / np.power(euclidean_cost(source_index, sink_index), alpha) \
-            for sink_index in sink_indices
+            for sink_index in sink_indices_list
     ])
     sampled = set(np.random.choice(
         sink_indices_list,
@@ -21,7 +21,7 @@ def watts_strogatz_sampler(source_index, sink_indices_list, spread_weights, alph
     return sampled
 
 
-def erdos_renyi_sampler(source_index, sink_indices_list, percent=0.2):
+def erdos_renyi_sampler(source_index, sink_indices_list, percent=0.1):
     assert (percent <= 1) and (percent >= 0)
     sampled = set(np.random.choice(sink_indices_list, int(percent * len(sink_indices_list))))
     assert len(sampled) > 1
