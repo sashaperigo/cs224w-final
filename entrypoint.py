@@ -11,3 +11,53 @@ example = build_graph(data, cell_types_to_indices, complete_sampler, {})
 
 
 find_shortest_paths(example, cell_types_to_indices, euclidean_cost)
+
+
+def shortest_paths(cell_types_to_indices, sampler_fn, sampler_fn_kwargs, cost_fn, file_label, n=15):
+    for i in range(n):
+        graph = build_graph(cell_types_to_indices, sampler_fn, sampler_fn_kwargs)
+        actions = find_shortest_paths(graph, cell_types_to_indices, cost_fn)
+        for primitive_type, primitive_sources_to_actions in actions.iteritems():
+            dataframe = pd.DataFrame.from_dict(
+                primitive_sources_to_actions,
+                orient='index'
+            )
+            local_fn = "{}/{}-{}-{}.csv".format(
+                OUTPUT_DIR,
+                file_label,
+                i,
+                primitive_type
+            )
+            dataframe.to_csv(local_fn)
+
+
+def erdos_renyi(cell_types_to_indices):
+    shortest_paths(
+        cell_types_to_indices,
+        erdos_renyi_sampler,
+        {},
+        euclidean_cost,
+        'erdos_renyi',
+    )
+
+
+def watts_strogatz(cell_types_to_indices):
+    shortest_paths(
+        cell_types_to_indices,
+        watts_strogatz_sampler,
+        {},
+        euclidean_cost,
+        'watts_strogatz',
+    )
+
+
+def main():
+    data = get_normalized_data(MEASUREMENTS_PATH, TYPES_PATH)
+    cell_types_to_indices = get_cell_types_to_indices(data)
+
+    erdos_renyi(cell_types_to_indices)
+    watts_strogatz(cell_types_to_indices)
+
+
+if __name__ == "__main__":
+    main()

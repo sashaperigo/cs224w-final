@@ -25,3 +25,5 @@ DISTANCES_COLNAME = 'distance'
 MEASUREMENTS_PATH = 'input_data/norm.csv'
 
 TYPES_PATH = 'input_data/celltypes.txt'
+
+OUTPUT_DIR = 'output_data'
