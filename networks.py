@@ -19,7 +19,7 @@ def watts_strogatz_sampler(source_index, sink_indices_list, alpha=1, percent=0.1
 
     sampled = set(np.random.choice(
         sink_indices_list,
-        int(percent * len(sink_indices_list)),
+        int(percent * len(sink_indices_list) + 0.5),
         p=WATTS_STROGATZ_CACHE[source_index]
     ))
     assert len(sampled) > 0
