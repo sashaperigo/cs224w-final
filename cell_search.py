@@ -57,7 +57,7 @@ def find_shortest_paths(edges_dict, types_to_indices, cost_fn):
                 edges_dict,
                 cost_fn,
             )
-            count += 1
+        #    count += 1
     return actions
 
 
