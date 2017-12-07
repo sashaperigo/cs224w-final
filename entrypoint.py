@@ -10,6 +10,35 @@ import pandas as pd
 
 N_PROCESSES = 4
 
+
+def random_walks_multiple(cell_types_to_indices, sampler_fn, file_label, n=100):
+    pool = Pool(N_PROCESSES)
+    pool.map(
+        random_walks_wrapper,
+        [(cell_types_to_indices, sampler_fn, file_label, i) for i in range(n)]
+    )
+
+
+def random_walks_wrapper(args):
+    random_walks(*args)
+
+
+def random_walks(cell_types_to_indices, sampler_fn, file_label, index):
+    for primitive_type in PRIMITIVE_TYPES:
+        indices_to_actions = run_random_walk(cell_types_to_indices, primitive_type, sampler_fn)
+        dataframe = pd.DataFrame.from_dict(
+            indices_to_actions,
+            orient='index'
+        )
+        local_fn = "{}/{}-{}-{}.csv".format(
+            OUTPUT_DIR,
+            file_label,
+            index,
+            primitive_type
+        )
+        dataframe.to_csv(local_fn)
+
+
 def run_random_walk(cell_types_to_indices, primitive_type, sampler_fn):
     indices_to_actions = defaultdict(list)
 
@@ -31,29 +60,12 @@ def run_random_walk(cell_types_to_indices, primitive_type, sampler_fn):
 
             # This percent should return exactly one node.
             percent = float(1) / len(sink_indices)
-            successor = list(sampler_fn(curr, sink_indices, percent=percent))[0]
+            successor_set = sampler_fn(curr, sink_indices, percent=percent)
+            successor = list(successor_set)[0]
             indices_to_actions[index].append(successor)
             curr = successor
 
     return indices_to_actions
-
-
-def random_walks(cell_types_to_indices, sampler_fn, file_label, n=100):
-    for i in range(n):
-        for primitive_type in PRIMITIVE_TYPES:
-            indices_to_actions = run_random_walk(cell_types_to_indices, primitive_type, sampler_fn)
-            print indices_to_actions
-            dataframe = pd.DataFrame.from_dict(
-                indices_to_actions,
-                orient='index'
-            )
-            local_fn = "{}/{}-{}-{}.csv".format(
-                OUTPUT_DIR,
-                file_label,
-                i,
-                primitive_type
-            )
-            dataframe.to_csv(local_fn)
 
 
 def shortest_paths_multiple(cell_types_to_indices, sampler_fn, sampler_fn_kwargs, cost_fn, file_label, n=15):
@@ -63,8 +75,10 @@ def shortest_paths_multiple(cell_types_to_indices, sampler_fn, sampler_fn_kwargs
         [(cell_types_to_indices, sampler_fn, sampler_fn_kwargs, cost_fn, file_label, i) for i in range(n)]
     )
 
+
 def shortest_paths_wrapper(args):
     shortest_paths(*args)
+
 
 def shortest_paths(cell_types_to_indices, sampler_fn, sampler_fn_kwargs, cost_fn, file_label, index):
     graph = build_graph(cell_types_to_indices, sampler_fn, sampler_fn_kwargs)
@@ -110,7 +124,7 @@ def main():
     # erdos_renyi(cell_types_to_indices)
     # watts_strogatz(cell_types_to_indices)
     # random_walks(cell_types_to_indices, erdos_renyi_sampler, "random_walk_erdos_renyi")
-    random_walks(cell_types_to_indices, watts_strogatz_sampler, "random_walk_watts_strogratz", 1)
+    random_walks(cell_types_to_indices, watts_strogatz_sampler, "random_walk_watts_strogratz")
 
 
 if __name__ == "__main__":
