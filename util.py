@@ -29,6 +29,7 @@ def get_indices_to_cell_types(dataframe):
     indices_to_cell_types = {}
     for row in dataframe.iterrows():
         indices_to_cell_types[row[0]] = row[1]['Type']
+    return indices_to_cell_types
 
 
 # ----GENE UTIL----

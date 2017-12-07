@@ -18,7 +18,7 @@ TERMINAL_TYPES = [
 
 TERMINAL_MARKER = 'TERMINAL_MARKER'
 
-DISTANCES_FILE = 'euclidean_distances.csv'
+DISTANCES_FILE = 'input_data/euclidean_distances.csv'
 
 DISTANCES_COLNAME = 'distance'
 
