@@ -25,6 +25,12 @@ def get_cell_types_to_indices(dataframe):
     return types_to_indices
 
 
+def get_indices_to_cell_types(dataframe):
+    indices_to_cell_types = {}
+    for row in dataframe.iterrows():
+        indices_to_cell_types[row[0]] = row[1]['Type']
+
+
 # ----GENE UTIL----
 
 # Given the dataframe, two indices and spreadweights, returns a number
