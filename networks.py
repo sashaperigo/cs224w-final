@@ -10,16 +10,16 @@ WATTS_STROGATZ_CACHE = {}
 
 def watts_strogatz_sampler(source_index, sink_indices_list, alpha=1, percent=0.1):
     if source_index not in WATTS_STROGATZ_CACHE:
-        WATTS_STROGATZ_CACHE[source_index] = np.array([
+        proportions = np.array([
             1 / np.power(euclidean_cost(source_index, sink_index), alpha)
             for sink_index in sink_indices_list
         ])
+        WATTS_STROGATZ_CACHE[source_index] = proportions / np.sum(proportions)
 
-    proportions = WATTS_STROGATZ_CACHE[source_index]
     sampled = set(np.random.choice(
         sink_indices_list,
         int(percent * len(sink_indices_list)),
-        p=proportions / np.sum(proportions)
+        p=WATTS_STROGATZ_CACHE[source_index]
     ))
     assert len(sampled) > 1
     return sampled
