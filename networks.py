@@ -4,6 +4,7 @@ from util import evolve_type
 
 from collections import defaultdict
 import numpy as np
+import random
 
 WATTS_STROGATZ_CACHE = {}
 
@@ -18,17 +19,20 @@ def watts_strogatz_sampler(source_index, sink_indices_list, alpha=1, percent=0.1
 
     sampled = set(np.random.choice(
         sink_indices_list,
-        int(percent * len(sink_indices_list)),
+        int(percent * len(sink_indices_list) + 0.5),
         p=WATTS_STROGATZ_CACHE[source_index]
     ))
-    assert len(sampled) > 1
+    assert len(sampled) > 0
     return sampled
 
 
 def erdos_renyi_sampler(source_index, sink_indices_list, percent=0.1):
     assert (percent <= 1) and (percent >= 0)
-    sampled = set(np.random.choice(sink_indices_list, int(percent * len(sink_indices_list))))
-    assert len(sampled) > 1
+    num_elems = int(percent * len(sink_indices_list))
+
+    random.shuffle(sink_indices_list)
+    sampled = set(sink_indices_list[0:num_elems + 1])
+    assert len(sampled) > 0
     return sampled
 
 

@@ -12,7 +12,6 @@ def euclidean_cost(index1, index2):
 
 def read_euclidean_distances(pathname=DISTANCES_FILE):
     distances = pd.read_csv(pathname, index_col=[0, 1], header=None)
-    print("READ DISTANCES ONCE")
     distances.columns = [DISTANCES_COLNAME]
     return distances
 
