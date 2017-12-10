@@ -26,4 +26,8 @@ MEASUREMENTS_PATH = 'input_data/norm.csv'
 
 TYPES_PATH = 'input_data/celltypes.txt'
 
+GENES_PATH = 'input_data/genes.txt'
+
 OUTPUT_DIR = 'output_data'
+
+NUM_TRIALS = 100

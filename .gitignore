@@ -103,3 +103,4 @@ ENV/
 # Exclude large dsitances file
 input_data/euclidean_distances.csv
 output_data/
+.DS_Store

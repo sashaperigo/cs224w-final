@@ -11,7 +11,7 @@ import pandas as pd
 N_PROCESSES = 4
 
 
-def random_walks_multiple(cell_types_to_indices, sampler_fn, file_label, n=100):
+def random_walks_multiple(cell_types_to_indices, sampler_fn, file_label, n=NUM_TRIALS):
     pool = Pool(N_PROCESSES)
     pool.map(
         random_walks_wrapper,
@@ -124,7 +124,7 @@ def main():
     # erdos_renyi(cell_types_to_indices)
     # watts_strogatz(cell_types_to_indices)
     # random_walks(cell_types_to_indices, erdos_renyi_sampler, "random_walk_erdos_renyi")
-    random_walks(cell_types_to_indices, watts_strogatz_sampler, "random_walk_watts_strogratz")
+    random_walks_multiple(cell_types_to_indices, watts_strogatz_sampler, "random_walk_watts_strogatz")
 
 
 if __name__ == "__main__":
