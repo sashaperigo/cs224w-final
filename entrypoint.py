@@ -11,7 +11,7 @@ import pandas as pd
 N_PROCESSES = 4
 
 
-def random_walks_multiple(cell_types_to_indices, sampler_fn, file_label, n=100):
+def random_walks_multiple(cell_types_to_indices, sampler_fn, file_label, n=NUM_TRIALS):
     pool = Pool(N_PROCESSES)
     pool.map(
         random_walks_wrapper,
