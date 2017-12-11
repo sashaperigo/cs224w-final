@@ -63,12 +63,10 @@ colnames(labels_comp) <- file_labels
 n_times_4G <- apply(labels_comp == '4G', 1, function(x) sum(x))
 
 for(i in 1:length(file_labels)) {
-  Sys.sleep(1)
   temp_celltypes <- factor(c(as.character(labels_comp[[file_labels[i]]]), as.character(celltypes[2182:length(celltypes)])))
-  genetic_biplot(Nor, temp_celltypes)
-  Sys.sleep(0)
+  plt <- genetic_biplot(Nor, temp_celltypes)
+  ggsave(filename = paste('output_data/biplots/', file_labels[i], '-biplot.png', sep=""), plt)
 }
-
 
 unique_bp_types <- factor(c(n_times_4G, as.character(celltypes[2182:length(celltypes)])))
 unique_bp_types <- factor(unique_bp_types, levels(unique_bp_types)[c(7, 1:5, 8, 6)])
@@ -93,3 +91,6 @@ colnames(prop_comp) <- file_labels
 ```
 
 TRANSITIONS ANALYSIS
+```{r, echo=FALSE}
+
+```
