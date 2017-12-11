@@ -100,7 +100,10 @@ ENV/
 # mypy
 .mypy_cache/
 
-# Exclude large dsitances file
 input_data/euclidean_distances.csv
-output_data/
+output_data/erdos_renyi_shortest_paths
+output_data/random_walk_erdos_renyi
+output_data/random_walk_watts_strogatz
+output_data/random_walk_watts_strogatz_a2
+output_data/watts_strogatz_shortest_paths
 .DS_Store
