@@ -71,7 +71,8 @@ for(i in 1:length(file_labels)) {
 unique_bp_types <- factor(c(n_times_4G, as.character(celltypes[2182:length(celltypes)])))
 unique_bp_types <- factor(unique_bp_types, levels(unique_bp_types)[c(7, 1:5, 8, 6)])
 unique_bp <- genetic_biplot(Nor, unique_bp_types)
-unique_bp + scale_color_manual(name="Number of models that predict 4G", values=c("white", "gray95", "gray82", "gray70", "gray58", "gray46", "gray34", "black"))
+plt <- unique_bp + scale_color_manual(name="Number of models that predict 4G", values=c("white", "gray95", "gray82", "gray70", "gray58", "gray46", "gray34", "black"))
+ggsave(filename = 'output_data/biplots/4G-times-predicted-biplot.png')
 ```
 
 PROPORTIONS ANALYSIS
