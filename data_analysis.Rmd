@@ -1,0 +1,89 @@
+---
+title: "Data_Analysis"
+author: "Gupta, Varun"
+date: "12/10/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(ggbiplot)
+
+setwd('~/workspace/cs224w-final')
+```
+
+```{r, echo=FALSE}
+Nor <- read.csv("~/Downloads/nbt.3154-S3.csv", row.names = 1)
+Norm <- as.matrix(Nor)
+desc1=unlist(strsplit(rownames(Norm),"_"))
+desc=desc1[seq(1,7867,2)]
+gr4sfg=which(substr(rownames(Norm),1,5)=="4SFGA")
+gr4sf=which(substr(rownames(Norm),1,4)=="4SGA")
+gr1=which(substr(rownames(Norm),1,2)=="PS")
+gr2=which(substr(rownames(Norm),1,2)=="NP")
+gr3=which(substr(rownames(Norm),1,2)=="HF")
+colscells=c("blue","green","orange","red","purple")
+colnb=rep(0,3934)
+colnb[gr1]=1
+colnb[gr2]=2
+colnb[gr3]=3
+colnb[gr4sf]=4
+colnb[gr4sfg]=5
+typesort=rep(0,3934)
+typesort[which(nchar(desc)<5 & substr(rownames(Norm),3,3)=="A")]="sortA"
+typesort[which(nchar(desc)<5 & substr(rownames(Norm),3,3)=="B")]="sortB"
+typesort[which(nchar(desc)>4)]="sortA"
+ftable(typesort)
+celltypes=as.factor(c("PS","NP","HF","4G","4GF")[colnb])
+cellcol=colscells[colnb]
+```
+
+```{r, echo=FALSE}
+file_labels = c('erdos_renyi_shortest_paths', 'watts_strogatz_shortest_paths', 'random_walk_erdos_renyi', 'random_walk_watts_strogatz', 'random_walks_watts_strogatz_a2')
+```
+
+BIPLOTS AND DIFFERENCES ANALYSIS
+```{r, echo=FALSE}
+genetic_biplot <- function(dataframe, types) {
+  pr <- prcomp(dataframe, scale=FALSE)
+  bp <- ggbiplot(pr, obs.scale=1, var.scale=1, scale=1, groups=types, ellipse=TRUE, circle=TRUE)
+  return(bp)
+}
+
+genetic_biplot(Nor, celltypes)
+
+labels_prefix <- 'output_Sysdata/terminal_types/'
+labels_comp <- data.frame(row.names=rownames(Nor)[1:2181])
+for(i in 1:length(file_labels)) {
+  label_fname <- paste(labels_prefix, file_labels[i], '.csv', sep="")
+  temp <- read.csv(label_fname, row.names=1, header=FALSE)
+  labels_comp[[file_labels[i]]] = temp[[1]]
+}
+colnames(labels_comp) <- file_labels
+n_times_4G <- apply(labels_comp == '4G', 1, function(x) sum(x))
+
+for(i in 1:length(file_labels)) {
+  Sys.sleep(.01)
+  temp_celltypes <- factor(c(as.character(labels_comp[[file_labels[i]]]), as.character(celltypes[2182:length(celltypes)])))
+  genetic_biplot(Nor, temp_celltypes)
+  Sys.sleep(.01)
+}
+```
+
+PROPORTIONS ANALYSIS
+```{r, echo=FALSE}
+n_4G <- sum(celltypes == '4G')
+n_4GF <- sum(celltypes == '4GF')
+true_proportion_4G <- n_4G/(n_4G + n_4GF)
+
+prop_prefix <- 'output_data/percents/'
+prop_comp <- data.frame(row.names=c('PS', 'NP', 'HF'))
+for(i in 1:length(file_labels)) {
+  prop_fname <- paste(prop_prefix, file_labels[i], '.csv', sep="")
+  tab <- read.csv(prop_fname, row.names=1)
+  prop_comp[[file_labels[i]]] = tab[[1]]
+}
+colnames(prop_comp) <- file_labels
+```
+
+TRANSITIONS ANALYSIS
