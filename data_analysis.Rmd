@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 require(ggbiplot)
-
+require(pheatmap)
 setwd('~/workspace/cs224w-final')
 ```
 
@@ -86,12 +86,23 @@ prop_comp <- data.frame(row.names=c('PS', 'NP', 'HF'))
 for(i in 1:length(file_labels)) {
   prop_fname <- paste(prop_prefix, file_labels[i], '.csv', sep="")
   tab <- read.csv(prop_fname, row.names=1)
-  prop_comp[[file_labels[i]]] = tab[[1]]
+  prop_comp[[file_labels[i]]] = tab[[2]]
 }
 colnames(prop_comp) <- file_labels
 ```
 
 TRANSITIONS ANALYSIS
 ```{r, echo=FALSE}
+erythroid <- c('Cdh1', 'Cdh5', 'Etv2', 'Gata1', 'Gfi1b', 'HbbbH1', 'Ikaros', 'Myb', 'Nfe2', 'Runx1', 'Sfpi1', 'Tal1')
+endothelial <- c('Cdh5', 'Erg', 'Fli1', 'HoxB4', 'Itga2b', 'Pecam1', 'Sox7', 'Sox17')
+rel_genes <- unique(c(erythroid, endothelial))
 
+transitions_prefix <- 'output_data/average_transitions/'
+for(i in 1:length(file_labels)) {
+  for (label in c('4G', '4GF')) {
+    transitions_fname <- paste(transitions_prefix, file_labels[i], '-', label, '.csv', sep="")
+    tab <- read.csv(transitions_fname, row.names=1)
+    heat <- pheatmap(data.matrix(tab[rel_genes, ]), cluster_row = FALSE, cluster_col = FALSE, color = heat.colors(12), filename = paste('output_data/heatmaps/', file_labels[i], '-', label, '-heatmap.png', sep=""))
+  }
+}
 ```
