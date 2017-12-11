@@ -1,5 +1,5 @@
 from defs import *
-from util import get_normalized_data, get_indices_to_cell_types
+from util import get_normalized_data, get_indices_to_cell_types, get_spread_weight_series
 
 from collections import defaultdict
 import csv
@@ -11,7 +11,8 @@ file_labels = [
     "random_walk_erdos_renyi",
     "random_walk_watts_strogatz",
     "watts_strogatz_shortest_paths",
-    "erdos_renyi_shortest_paths"
+    "erdos_renyi_shortest_paths",
+    "random_walk_watts_strogatz_a2"
 ]
 
 
@@ -22,6 +23,7 @@ file_labels = [
 #   }
 # }
 def load_output_data():
+    print "Reading in input data..."
     output_data = {}
     for label in file_labels:
         indices_to_actions = defaultdict(list)
@@ -87,6 +89,8 @@ def instantiate_avg_transitions():
 
 
 def avg_gene_transitions(cells_df, output_data, indices_to_cell_types):
+    spread_weights = get_spread_weight_series(cells_df)
+
     for label in file_labels:
         print "Calculating average transitions for %s..." % label
         terminal_types_to_indices = get_terminal_types_to_indices(output_data, indices_to_cell_types, label)
@@ -115,11 +119,14 @@ def avg_gene_transitions(cells_df, output_data, indices_to_cell_types):
                             curr_avg = avg_transitions_df['HF-4G/4GF']
                             avg_transitions_df['HF-4G/4GF'] = (curr_avg * hf_terminal_count + delta) / (hf_terminal_count + 1)
                             hf_terminal_count += 1
-            avg_transitions_df.to_csv("output_data/%s-%s" % (label, terminal_type))
+                for column_header in avg_transitions_df:
+                    avg_transitions_df[column_header] = avg_transitions_df[column_header] * spread_weights
+            avg_transitions_df.to_csv("output_data/average_transitions/%s-%s" % (label, terminal_type))
 
 
 def calculate_percents(output_data, indices_to_cell_types):
     for label in file_labels:
+        print "Calculating percentage of 4G and 4GF cells for %s..." % label
         df = pd.DataFrame(index=PRIMITIVE_TYPES, columns=TERMINAL_TYPES)
 
         primitive_to_terminal_types = {
@@ -152,6 +159,7 @@ def calculate_percents(output_data, indices_to_cell_types):
 
 def find_terminal_types(output_data, indices_to_cell_types):
     for label in file_labels:
+        print "Finding terminal types for all cells in %s..." % label
         with open("output_data/terminal_types/%s.csv" % label, "wb") as csv_file:
             writer = csv.writer(csv_file)
             for index, list_of_actions in output_data[label].iteritems():
@@ -177,6 +185,6 @@ cells = data[genes_list]
 indices_to_cell_types = get_indices_to_cell_types(data)
 
 output_data = load_output_data()
-# avg_gene_transitions(cells, output_data, indices_to_cell_types)
+avg_gene_transitions(cells, output_data, indices_to_cell_types)
 # calculate_percents(output_data, indices_to_cell_types)
-find_terminal_types(output_data, indices_to_cell_types)
+# find_terminal_types(output_data, indices_to_cell_types)
